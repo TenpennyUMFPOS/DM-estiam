@@ -4,69 +4,44 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from 'axios'
 
 function App() {
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
   axios.defaults.withCredentials = true;
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios.post('https://dm-estiam-api.vercel.app//register', { name, email, password })
-      .then(result => console.log(result))
-      .catch(err => console.log(err))
-  }
+  const [scoreboard, setScoreboard] = useState([]);
+
+  useEffect(() => {
+    const fetchScoreboard = async () => {
+      try {
+        const response = await axios.get('https://dm-estiam-api.vercel.app/players/scoreboard');
+        setScoreboard(response.data);
+      } catch (error) {
+        console.error('Error fetching scoreboard:', error);
+      }
+    };
+
+    fetchScoreboard();
+  }, []);
+
   return (
-    <div className="d-flex justify-content-center align-items-center bg-primary vh-100">
-      <div className="bg-white p-3 rounded w-25">
-        <h2>Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="email">
-              <strong>Name</strong>
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Name"
-              autoComplete="off"
-              name="email"
-              className="form-control rounded-0"
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="email">
-              <strong>Email</strong>
-            </label>
-            <input
-              type="email"
-              placeholder="Enter Email"
-              autoComplete="off"
-              name="email"
-              className="form-control rounded-0"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="email">
-              <strong>Password</strong>
-            </label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              name="password"
-              className="form-control rounded-0"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button type="submit" className="btn btn-success w-100 rounded-0">
-            Register
-          </button>
-          <p>Already Have an Account</p>
-          <button className="btn btn-default border w-100 bg-light rounded-0 text-decoration-none">
-            Login
-          </button>
-        </form>
+    <div className='h-screen w-full bg-black flex flex-col'>
+      <div className='text-white self-center bg w-full flex justify-center'>
+        <div className='self-center items-center w-5/6'>
+
+          {scoreboard.map((player, index) => (
+            <div className='flex flex-row justify-evenly m-4 font-monospace font-extrabold text-white hover:text-green hover:cursor-pointer hover:border-b-2' key={player._id}>
+              <p>{index + 1}. </p>
+              <p>{player.username}</p>
+              <p> - Score: {player.score}</p>
+            </div>
+          ))}
+
+          {/* Display a message if scoreboard is empty */}
+          {scoreboard.length === 0 && (
+            <p className="text-white">No scoreboard data available.</p>
+          )}
+
+        </div>
       </div>
     </div>
+
   );
 }
 
