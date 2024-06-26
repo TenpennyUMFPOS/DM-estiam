@@ -7,19 +7,19 @@ function App() {
   const [name, setName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-axios.defaults.withCredentials = true;
+  axios.defaults.withCredentials = true;
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://deploy-mern-api.vercel.app/register', {name, email, password})
-    .then(result => console.log(result))
-    .catch(err => console.log(err))
+    axios.post('https://dm-estiam-api.vercel.app//register', { name, email, password })
+      .then(result => console.log(result))
+      .catch(err => console.log(err))
   }
   return (
     <div className="d-flex justify-content-center align-items-center bg-primary vh-100">
       <div className="bg-white p-3 rounded w-25">
         <h2>Register</h2>
         <form onSubmit={handleSubmit}>
-        <div className="mb-3">
+          <div className="mb-3">
             <label htmlFor="email">
               <strong>Name</strong>
             </label>
@@ -54,7 +54,7 @@ axios.defaults.withCredentials = true;
               placeholder="Enter Password"
               name="password"
               className="form-control rounded-0"
-              onChange={(e) => setPassword(e.target.value)}          
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button type="submit" className="btn btn-success w-100 rounded-0">
